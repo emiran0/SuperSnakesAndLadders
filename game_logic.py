@@ -10,13 +10,13 @@ class Board:
 # ---
 
 class Dice:
-    def __init__(self,name):
-        self.name = name
+    def __init__(self,number):
+        self.number = number
         self.value = 0
-        print(f"{self.name} (Dice) was created.")
+        print(f"1d{self.number} (Dice) was created.")
     
     def dice_roll(self):
-        self.value = random.randint(1, 6)
+        self.value = random.randint(1, self.number)
         return self.value
 # ---
 
@@ -30,17 +30,33 @@ class Player:
     def move(self, steps):
         self.position += steps
         print(f"{self.name} moved to {self.position}")
+        
+    def teleport(self, endpos):
+        self.position = endpos
+        print(f"{self.name} teleported to {self.position}")
 # ---
 
 # Objects serve as a superclass for our snakes and ladders
 class Object:
-    def __init__(self, name, type, val):
-        self.name = name
-        self.val = val
-        print(f"{self.name} ({type} was created.")
+    def __init__(self, start, end):
+        self.type = type
+        self.start = start
+        self.end = end
+        print(f"{self.type} was created with start {start} and end {end}.")
 # ---
+class Ladder(Object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        print(f"Ladder was created with start {start} and end {end}.")
+# ---
+class Snake(Object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        print(f"Snake was created with start {start} and end {end}.")
 
-#setup game loop:
+#setup Players:
 
 print("Hello! Welcome to Super Snakes And Ladders!\n")
 
@@ -73,9 +89,28 @@ print("\nLet's begin! Our players are:")
 for player in players:
     print(f"- {player.name} (starting at {player.position})")
 
-#main game loop:
+#Setup Game Board
 diceval = 0
-mydice = Dice("1d6")
+mydice = Dice(12)
+
+l1= Ladder(3,51)
+l2= Ladder(6,27)
+l3= Ladder(20,70)
+l4= Ladder(36,55)
+l5= Ladder(3,51)
+l6= Ladder(6,27)
+
+ladders = [l1,l2,l3,l4,l5,l6]
+
+s1= Snake(25,5)
+s2= Snake(34,1)
+s3= Snake(47,19)
+s4= Snake(65,52)
+s5= Snake(87,57)
+s6= Snake(91,61)
+s7= Snake(99,69)
+
+snakes = [s1,s2,s3,s4,s5,s6,s7]
 
 game_is_running = True
 while game_is_running:
@@ -93,8 +128,18 @@ while game_is_running:
             input(f"...{diceval}")
             # ... add your game logic here ...2
             current_player.move(diceval)
-            # print(f"{current_player.name} moves forward {diceval} squares!")
-            # print(f"{current_player.name} is now on square {current_player.position}.\n")
+            
+            for ladder in ladders:
+                if current_player.position == ladder.start:
+                    print(f"Great! {current_player.name} found a ladder on square {current_player.position}!")
+                    current_player.teleport(ladder.end)
+                    break
+            
+            for snake in snakes:
+                if current_player.position == snake.start:
+                    print(f"Oh no! {current_player.name} found a snake on square {current_player.position}!")
+                    current_player.teleport(snake.end)
+                    break
             
         elif user_action == "quit":
             print("Thanks for playing!")
