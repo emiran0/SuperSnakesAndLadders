@@ -3,12 +3,7 @@
 
 import random
 
-class Board:
-    def __init__(self, name):
-        self.name = name
-        print(f"{self.name} (Board) was created.")
-# ---
-
+#---------------------------------------initialise Classes-----------------------------------
 class Dice:
     def __init__(self,number):
         self.number = number
@@ -36,7 +31,7 @@ class Player:
         print(f"{self.name} teleported to {self.position}")
 # ---
 
-# Objects serve as a superclass for our snakes and ladders
+# Object serve as a superclass for our snake and ladder classes
 class Object:
     def __init__(self, start, end):
         self.type = type
@@ -44,19 +39,21 @@ class Object:
         self.end = end
         print(f"{self.type} was created with start {start} and end {end}.")
 # ---
-class Ladder(Object):
+class Ladder(Object): #child of object
     def __init__(self, start, end):
         self.start = start
         self.end = end
         print(f"Ladder was created with start {start} and end {end}.")
 # ---
-class Snake(Object):
+class Snake(Object): #child of object
     def __init__(self, start, end):
         self.start = start
         self.end = end
         print(f"Snake was created with start {start} and end {end}.")
 
-#setup Players:
+#---------------------------------------initialise Classes DONE-----------------------------------
+
+#---------------------------------------setup Players-----------------------------------
 
 print("Hello! Welcome to Super Snakes And Ladders!\n")
 
@@ -74,7 +71,6 @@ while True:
         print("That's not a number. try again!")
 
 # --- Get Player Names ---
-# This list will hold all your Player objects
 players = [] 
 
 print(f"\nGreat! Let's get names for the {playercount} players.")
@@ -83,26 +79,25 @@ for i in range(playercount):
     name = input(f"Enter name for Player {i + 1}: ")
     players.append(Player(name))
 
-# --- Get Player Names done ---
-
 print("\nLet's begin! Our players are:")
 for player in players:
     print(f"- {player.name} (starting at {player.position})")
+#---------------------------------------setup Players DONE-----------------------------------
 
+#---------------------------------------setup Game board-----------------------------------
 #Setup Game Board
-diceval = 0
-mydice = Dice(12)
+mydice = Dice(12) #change the number if we want 1d(n) dice, ex. (6) for 1d6, (10) for 1d10... etc
 
-l1= Ladder(3,51)
+l1= Ladder(3,51) #start and end positions
 l2= Ladder(6,27)
 l3= Ladder(20,70)
 l4= Ladder(36,55)
 l5= Ladder(3,51)
 l6= Ladder(6,27)
 
-ladders = [l1,l2,l3,l4,l5,l6]
+ladders = [l1,l2,l3,l4,l5,l6] #this is the list of ladders
 
-s1= Snake(25,5)
+s1= Snake(25,5) #start and end positions
 s2= Snake(34,1)
 s3= Snake(47,19)
 s4= Snake(65,52)
@@ -110,7 +105,13 @@ s5= Snake(87,57)
 s6= Snake(91,61)
 s7= Snake(99,69)
 
-snakes = [s1,s2,s3,s4,s5,s6,s7]
+snakes = [s1,s2,s3,s4,s5,s6,s7] #this is the list of snakes
+
+#---------------------------------------setup Game board DONE-----------------------------------
+
+#---------------------------------------start game-----------------------------------
+
+diceval = 0 #create a diceval variable to store the dicerolls
 
 game_is_running = True
 while game_is_running:
@@ -121,29 +122,30 @@ while game_is_running:
         user_action = input("Press ENTER to roll the dice (or type 'quit' to exit): ")
 
         if user_action == "":
-            # The user just pressed Enter
+            # The user pressed Enter
             print("Rolling the dice!")
             diceval = mydice.dice_roll()
             input("...The Result is...")
+            # The user pressed Enter
             input(f"...{diceval}")
-            # ... add your game logic here ...2
+            # The user pressed Enter
             current_player.move(diceval)
             
             for ladder in ladders:
                 if current_player.position == ladder.start:
                     print(f"Great! {current_player.name} found a ladder on square {current_player.position}!")
                     current_player.teleport(ladder.end)
-                    break
+                    break # end the for loop
             
             for snake in snakes:
                 if current_player.position == snake.start:
                     print(f"Oh no! {current_player.name} found a snake on square {current_player.position}!")
                     current_player.teleport(snake.end)
-                    break
+                    break # end the for loop
             
         elif user_action == "quit":
             print("Thanks for playing!")
-            break # Exit the loop
+            break # Exit the game
             
         else:
             # The user typed something else
@@ -151,6 +153,7 @@ while game_is_running:
             
         if current_player.position >= 100:
            print(f"{current_player.name} WINS!")
-           game_is_running = False # This will end the 'while' loop
-           break # This will end the 'for' loop
+           game_is_running = False #  end the while loop
+           break # end the for loop
 
+#---------------------------------------END game-----------------------------------
