@@ -68,13 +68,13 @@ while running:
                 for ladder in ladders:
                     if current_player.position == ladder.start:
                         current_player.teleport(ladder.end)
-                        game_message += " Great! It's a LADDER!"
+                        game_message += f" Great! It's a LADDER! Moved to {current_player.position}."
                         hit_object = True
                 
                 for snake in snakes:
                     if current_player.position == snake.start:
                         current_player.teleport(snake.end)
-                        game_message += " Oh No! It's a SNAKE!"
+                        game_message += f" Oh No! It's a SNAKE! Moved to {current_player.position}."
                         hit_object = True
                 
                 if not hit_object:
@@ -86,6 +86,8 @@ while running:
                     game_over = True
                 else:
                     current_idx = (current_idx + 1) % len(players)
+                
+                last_player = current_player
 
     # 2) Frontend Side
     # We pass the list of players and the current message to the UI Module's Draw Function
