@@ -1,7 +1,12 @@
+# SUPER SNAKES AND LADDERS with UI v0.2
+# Small Embedded Systems 25/26
+# Main Module
+
 import sys
-import pygame
-import game # Import our logic
-import ui   # Import our graphics
+import pygame # pygagme module
+import classes # where our classes are in
+import ui # where our graphics are
+import time # for delays
 
 #---------------------------------------1. setup Players-----------------------------------
 
@@ -19,24 +24,18 @@ while True:
     else:
         print("That's not a number. try again!")
 
-# while True:
-#     try:
-#         count = int(input("How many players? (1-4): "))
-#         if 1 <= count <= 4: break
-#     except: pass
-
 # --- Get Player Names ---
 players = []
 for i in range(playercount):
     name = input(f"Name for Player {i+1}: ")
     # Assign color from UI constants
     color = ui.PLAYER_COLORS[i]
-    players.append(game.Player(name, color))
+    players.append(classes.Player(name, color))
 
 # --- 2. GAME INIT ---
-dice = game.Dice(1, 6)
-ladders = game.get_ladders()
-snakes = game.get_snakes()
+dice = classes.Dice(1, 6)
+ladders = classes.get_ladders()
+snakes = classes.get_snakes()
 display = ui.GameUI() # Start the UI window
 
 current_idx = 0
@@ -46,47 +45,50 @@ running = True
 
 # --- 3. MAIN LOOP ---
 while running:
-    # A. Input Handling
+    
+    # 1) Backend Side
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         
         if event.type == pygame.KEYDOWN and not game_over:
             if event.key == pygame.K_SPACE:
+                
                 # --- TURN LOGIC ---
-                curr_player = players[current_idx]
+                current_player = players[current_idx]
                 
                 # Roll & Move
                 roll = dice.dice_roll()
-                curr_player.move(roll)
-                game_message = f"{curr_player.name} rolled {roll}."
+                current_player.move(roll)
+                time.sleep(0.5)
+                game_message = f"{current_player.name} rolled {roll}!"
 
                 # Check Snakes/Ladders
-                hit_special = False
-                for lad in ladders:
-                    if curr_player.position == lad.start:
-                        curr_player.teleport(lad.end)
-                        game_message += " LADDER!"
-                        hit_special = True
+                hit_object = False
+                for ladder in ladders:
+                    if current_player.position == ladder.start:
+                        current_player.teleport(ladder.end)
+                        game_message += " Great! It's a LADDER!"
+                        hit_object = True
                 
-                for snk in snakes:
-                    if curr_player.position == snk.start:
-                        curr_player.teleport(snk.end)
-                        game_message += " SNAKE!"
-                        hit_special = True
+                for snake in snakes:
+                    if current_player.position == snake.start:
+                        current_player.teleport(snake.end)
+                        game_message += " Oh No! It's a SNAKE!"
+                        hit_object = True
                 
-                if not hit_special:
-                    game_message += f" to {curr_player.position}."
+                if not hit_object:
+                    game_message += f" Moved to {current_player.position}."
 
                 # Win Check or Next Turn
-                if curr_player.position == 100:
-                    game_message = f"{curr_player.name} WINS!"
+                if current_player.position == 100:
+                    game_message = f"{current_player.name} WINS!"
                     game_over = True
                 else:
                     current_idx = (current_idx + 1) % len(players)
 
-    # B. Update Display
-    # We pass the list of players and the current message to the UI
+    # 2) Frontend Side
+    # We pass the list of players and the current message to the UI Module's Draw Function
     display.draw(players, players[current_idx], game_message, game_over)
 
 pygame.quit()
