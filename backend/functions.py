@@ -3,7 +3,8 @@ from backend.classes import Player
 from typing import List
 
 import backend.classes as classes
-import ui
+from frontend.constants import PLAYER_COLORS
+import frontend.ui as ui
 
 # --- Get Player Count (with validation) --- 
 # Written by Irfan, with editing from Daniel
@@ -27,7 +28,7 @@ def get_players(players_string: str) -> List[Player]:
     for i in range(playercount):
         name = input(f"Name for Player {i+1}: ")
         # Assign color from UI constants
-        color = ui.PLAYER_COLORS[i]
+        color = PLAYER_COLORS[i]
         players.append(classes.Player(name, color))
 
     print("\nLet's begin! Our players are:")

@@ -7,7 +7,7 @@ from backend import functions
 
 import pygame # pygagme module
 import backend.classes as classes # where our classes are in
-import ui # where our graphics are
+import frontend.ui as ui # where our graphics are
 import time # for delays
 
 #---------------------------------------1. setup Players-----------------------------------
@@ -55,7 +55,7 @@ while running:
                         game_is_running = False
                         break
                     elif current_player.position + roll > 100:
-                        game_message += f" {current_player.name} stays where they are - must land on 100 to win!"
+                        game_message += f" {current_player.name} stays on {current_player.position} - need 100 to win!"
                         current_idx = (current_idx + 1) % len(players)
                         continue
                     else:
