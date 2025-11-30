@@ -1,41 +1,26 @@
 # SUPER SNAKES AND LADDERS with UI v0.2
-# Small Embedded Systems 25/26
+# Software and Systems 25/26
 # Main Module
 
 import sys
+from backend import functions
+
 import pygame # pygagme module
-import classes # where our classes are in
+import backend.classes as classes # where our classes are in
 import ui # where our graphics are
 import time # for delays
 
 #---------------------------------------1. setup Players-----------------------------------
 
 print("Hello! Welcome to Super Snakes And Ladders!\n")
+num_players = input("How many players? (1-4): ")
 
-playercount = 0
-while True:
-    playercount_str = input("How many players are we having today? (1-4): ")
-    if playercount_str.isdigit():
-        playercount = int(playercount_str)
-        if 1 <= playercount <= 4:
-            break  # Valid input, exit the loop
-        else:
-            print("Please enter a number between 1 and 4.")
-    else:
-        print("That's not a number. try again!")
-
-# --- Get Player Names ---
-players = []
-for i in range(playercount):
-    name = input(f"Name for Player {i+1}: ")
-    # Assign color from UI constants
-    color = ui.PLAYER_COLORS[i]
-    players.append(classes.Player(name, color))
+players = functions.get_players(num_players)
 
 # --- 2. GAME INIT ---
 dice = classes.Dice(1, 6)
-ladders = classes.get_ladders()
-snakes = classes.get_snakes()
+ladders = functions.get_ladders()
+snakes = functions.get_snakes()
 display = ui.GameUI() # Start the UI window
 
 current_idx = 0
@@ -59,9 +44,23 @@ while running:
                 
                 # Roll & Move
                 roll = dice.dice_roll()
-                current_player.move(roll)
                 time.sleep(0.5)
                 game_message = f"{current_player.name} rolled {roll}!"
+
+                # Code which checks if current_player has won - Daniel Cowen
+                if current_player.position in range(94, 100):
+                    if current_player.position + roll == 100:
+                        current_player.move(roll)
+                        print(f"100 reached - {current_player.name} WINS!")
+                        game_is_running = False
+                        break
+                    elif current_player.position + roll > 100:
+                        print(f"{current_player.name} stays where they are - must land on 100 to win!")
+                        continue
+                    else:
+                        pass
+
+                current_player.move(roll)
 
                 # Check Snakes/Ladders
                 hit_object = False
@@ -79,13 +78,6 @@ while running:
                 
                 if not hit_object:
                     game_message += f" Moved to {current_player.position}."
-
-                # Win Check or Next Turn
-                if current_player.position == 100:
-                    game_message = f"{current_player.name} WINS!"
-                    game_over = True
-                else:
-                    current_idx = (current_idx + 1) % len(players)
                 
                 last_player = current_player
 

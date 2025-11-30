@@ -1,7 +1,7 @@
 #SUPER SNAKES AND LADDERS CLI v0.1
 #by irfanbstr
 
-from classes import Dice
+from backend.classes import Dice
 from functions import get_players
 from constants import ladders, snakes
 import time
@@ -43,18 +43,6 @@ while game_is_running:
             time.sleep(0.5) # delay by 0.5s to simulate dice roll
             print(f"...{diceval}")
             
-            # Code which checks if current_player has won - Daniel Cowen
-            if current_player.position in range(94, 100):
-                if current_player.position + diceval == 100:
-                    current_player.move(diceval)
-                    print(f"100 reached - {current_player.name} WINS!")
-                    game_is_running = False
-                    break
-                elif current_player.position + diceval > 100:
-                    print(f"{current_player.name} stays where they are - must land on 100 to win!")
-                    continue
-                else:
-                    pass
 
             current_player.move(diceval)
             
