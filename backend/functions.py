@@ -43,4 +43,4 @@ def get_ladders():
     return [Teleporter(3,51), Teleporter(6,27), Teleporter(20,70), Teleporter(36,55), Teleporter(63,95), Teleporter(68,98)]
 
 def get_snakes():
-    return [Teleporter(25,5), Teleporter(34,1), Teleporter(47,19), Teleporter(65,52), Teleporter(87,57), Teleporter(91,61), Teleporter(98,68)]
+    return [Teleporter(25,5), Teleporter(34,1), Teleporter(47,19), Teleporter(65,52), Teleporter(87,57), Teleporter(91,61), Teleporter(99,69)]

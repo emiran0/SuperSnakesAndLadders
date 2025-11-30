@@ -51,16 +51,18 @@ while running:
                 if current_player.position in range(94, 100):
                     if current_player.position + roll == 100:
                         current_player.move(roll)
-                        print(f"100 reached - {current_player.name} WINS!")
+                        game_message += f" 100 reached - {current_player.name} WINS!"
                         game_is_running = False
                         break
                     elif current_player.position + roll > 100:
-                        print(f"{current_player.name} stays where they are - must land on 100 to win!")
+                        game_message += f" {current_player.name} stays where they are - must land on 100 to win!"
+                        current_idx = (current_idx + 1) % len(players)
                         continue
                     else:
                         pass
 
                 current_player.move(roll)
+                current_idx = (current_idx + 1) % len(players)
 
                 # Check Snakes/Ladders
                 hit_object = False
