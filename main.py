@@ -51,8 +51,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         
-        if event.type == pygame.KEYDOWN and not game_over:
-            if event.key == pygame.K_SPACE:
+        if event.type == pygame.MOUSEBUTTONDOWN and not game_over and display.roll_button.button_clicked(event.pos):
                 
                 # --- TURN LOGIC ---
                 current_player = players[current_idx]
