@@ -1,7 +1,18 @@
-from classes import Player
+# SUPER SNAKES AND LADDERS v1.0
+# Software and Systems 25/26
+# Classes Module
+# Daniel Cowen
+
+from backend.classes import Teleporter
+from backend.classes import Player
 from typing import List
 
-# --- Get Player Count (with validation) ---
+import backend.classes as classes
+from frontend.constants import PLAYER_COLORS
+import frontend.ui as ui
+
+# --- Get Player Count (with validation) --- 
+# Written by Irfan, with editing from Daniel
 
 def get_players(players_string: str) -> List[Player]:
 
@@ -17,13 +28,13 @@ def get_players(players_string: str) -> List[Player]:
             print("That's not a number. try again!")
 
     # --- Get Player Names ---
-    players = [] 
-
     print(f"\nGreat! Let's get names for the {playercount} players.")
+    players = []
     for i in range(playercount):
-        # 'i + 1' makes it "Player 1", "Player 2", etc.
-        name = input(f"Enter name for Player {i + 1}: ")
-        players.append(Player(name))
+        name = input(f"Name for Player {i+1}: ")
+        # Assign color from UI constants
+        color = PLAYER_COLORS[i]
+        players.append(classes.Player(name, color))
 
     print("\nLet's begin! Our players are:")
     for player in players:
@@ -31,3 +42,11 @@ def get_players(players_string: str) -> List[Player]:
 
     print(players)
     return players
+
+# --- BOARD DATA ---
+# We return these lists so main.py can use them
+def get_ladders():
+    return [Teleporter(3,51), Teleporter(6,27), Teleporter(20,70), Teleporter(36,55), Teleporter(63,95), Teleporter(68,98)]
+
+def get_snakes():
+    return [Teleporter(25,5), Teleporter(34,1), Teleporter(47,19), Teleporter(65,52), Teleporter(87,57), Teleporter(91,61), Teleporter(99,69)]

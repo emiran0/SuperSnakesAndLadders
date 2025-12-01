@@ -1,30 +1,21 @@
-# SUPER SNAKES AND LADDERS with UI v0.2
-# Small Embedded Systems 25/26
+# SUPER SNAKES AND LADDERS v1.0
+# Software and Systems 25/26
 # UI Module
+# Daniel Cowen, Irfan Satria, Emirhan
+
 
 # Irfan:
 # this is the graphics module.
 # it contains a single Class called GameUI containing the UI Elements.
 
 import pygame
+import sys
 
-# --- PYGAME SETUP ---
-# Create a square window for our board plus extra vertical space for text.
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 700 # 600 for board + 100 for text
-FPS = 60 # Capping the Frames per second. 
-# Prevents performance issues, without it everything is executed as fast as the processor allows.
-# 60 is selected as most monitors have a 60Hz refresh rate.
+from frontend.constants import BLACK, FPS, GRAY, SCREEN_HEIGHT, SCREEN_WIDTH, WHITE
 
-# DEFINE Colors ----------------------------------------------------------------
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GRAY = (50, 50, 50)
-PLAYER_COLORS = [(255, 0, 0), (0, 0, 255), (0, 255, 0), (255, 255, 0)] # Red, Blue, Green, Yellow
+# -------------------------GAME UI (by Irfan Satria, modified by Daniel, Emirhan)---------------------------------------------------
 
-# ---------------------------------------------------------------------------------------
-
-class GameUI:
+class GameUI: 
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -38,9 +29,15 @@ class GameUI:
             # More suitable "Game-y" font
             #https://nimblebeastscollective.itch.io/nb-pixel-font-bundle
             self.font = pygame.font.Font("LCDBlock.ttf", 26)
+            self.title_font = pygame.font.Font("LCDBlock.ttf", 64)
+            self.button_font = pygame.font.Font("LCDBlock.ttf", 32)
+            self.subtitle_font = pygame.font.Font("LCDBlock.ttf", 28)
         except:
             #Revert to Arial if Font not found
             self.font = pygame.font.SysFont("Arial", 24)
+            self.title_font = pygame.font.SysFont("Arial", 64)
+            self.button_font = pygame.font.SysFont("Arial", 32)
+            self.subtitle_font = pygame.font.SysFont("Arial", 28)
         
         # Load Board Image -------------------------------------------------------------------
         try:
@@ -53,7 +50,7 @@ class GameUI:
         # Create button for user to press 'roll' (Daniel Cowen)
         self.roll_button = Button(x=480, y=620, width=100, height=60, font=self.font, color=WHITE, text_color=BLACK, text="ROLL")
 
-    # Converting gameplay into pixel coordinates for drawing onto screen
+    # Converting gameplay into pixel coordinates for drawing onto screen (Irfan Satria)
 
     def get_pixel_coords(self, square_number):
         # This function Converts 1-100 square to x,y pixels
@@ -126,7 +123,38 @@ class GameUI:
 
         pygame.display.flip() # show image from buffer
         self.clock.tick(FPS)
+    
+    # Emirhan
+    def animate_player_move(self, players, current_idx, start_pos, end_pos, message):
+        """
+        Simple linear animation of a single player's piece along board squares.
+        Runs for 0.7 seconds total, regardless of distance. Not include delays for collision resulted events.
+        """
+        if start_pos == end_pos:
+            return
 
+        step = 1 if end_pos > start_pos else -1
+        distance = abs(end_pos - start_pos)
+
+        total_ms = 700
+        delay_ms = total_ms // distance  # Dynamic delay to avoid too fast animation
+        # print("Animating from", start_pos, "to", end_pos, "with delay", delay_ms, "ms")
+
+        pos = start_pos
+        while pos != end_pos:
+            pos += step
+            players[current_idx].position = pos
+
+            # keep window responsive, allow quit while animating
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            self.draw(players, players[current_idx], message, False)
+            pygame.time.delay(delay_ms)
+
+# Button By Daniel Cowen
 class Button:
     '''
     A class for creating a button on the screen - Created by Daniel Cowen

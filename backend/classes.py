@@ -1,10 +1,17 @@
+# SUPER SNAKES AND LADDERS v1.0
+# Software and Systems 25/26
+# Classes Module
+# Daniel Cowen, Irfan Satria
+
 import random
 
+#---------------------------------------initialise Classes-----------------------------------
+#Dice class!
 class Dice:
-    def __init__(self,amount,number):
+    def __init__(self, amount, number):
         self.amount = amount
         self.number = number
-        self.value = 0
+        self.value = 0 #initial value
         print(f"{self.amount}d{self.number} (Dice) was created.")
     
     def dice_roll(self):
@@ -14,22 +21,26 @@ class Dice:
 
 #Player class will handle the position of each player and the move function
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, color):
         self.name = name
         print(f"{self.name} (Player) was created.")
-        self.position = 0  # Give it a starting value
+        self.position = 0 # Give it a starting value
+        self.color = color 
 
     def move(self, steps):
-        self.position += steps
-        print(f"{self.name} moved to {self.position}")
+        
+        #how the player moves. They cannot move forward if the diceroll steps exceed 100
+        if (self.position + steps) <= 100:
+            self.position += steps
+            print(f"{self.name} moved to {self.position}")
+        
+        else:
+            print(f"{self.name} Cannot move! Exceeding 100!")
         
     def teleport(self, endpos):
         self.position = endpos
         print(f"{self.name} teleported to {self.position}")
-
 # ---
-
-# Object serve as a superclass for our snake and ladder classes
 
 # Teleporter class created by Daniel Cowen
 class Teleporter:
