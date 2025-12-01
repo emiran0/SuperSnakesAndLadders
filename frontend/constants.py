@@ -1,3 +1,8 @@
+# SUPER SNAKES AND LADDERS with UI v0.2
+# Software and Systems 25/26
+# Constants Module
+# Daniel Cowen, Irfan Satria
+
 # --- PYGAME SETUP ---
 # Create a square window for our board plus extra vertical space for text.
 SCREEN_WIDTH = 600

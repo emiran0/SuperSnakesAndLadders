@@ -1,6 +1,8 @@
 # SUPER SNAKES AND LADDERS with UI v0.2
 # Small Embedded Systems 25/26
 # UI Module
+# Daniel Cowen, Irfan Satria
+
 
 # Irfan:
 # this is the graphics module.
@@ -10,9 +12,9 @@ import pygame
 
 from frontend.constants import BLACK, FPS, GRAY, SCREEN_HEIGHT, SCREEN_WIDTH, WHITE
 
-# ---------------------------------------------------------------------------------------
+# -------------------------GAME UI (by Irfan Satria, modified by Daniel)---------------------------------------------------
 
-class GameUI:
+class GameUI: 
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -41,7 +43,7 @@ class GameUI:
         # Create button for user to press 'roll' (Daniel Cowen)
         self.roll_button = Button(x=480, y=620, width=100, height=60, font=self.font, color=WHITE, text_color=BLACK, text="ROLL")
 
-    # Converting gameplay into pixel coordinates for drawing onto screen
+    # Converting gameplay into pixel coordinates for drawing onto screen (Irfan Satria)
 
     def get_pixel_coords(self, square_number):
         # This function Converts 1-100 square to x,y pixels
@@ -115,6 +117,7 @@ class GameUI:
         pygame.display.flip() # show image from buffer
         self.clock.tick(FPS)
 
+# Button By Daniel Cowen
 class Button:
     '''
     A class for creating a button on the screen - Created by Daniel Cowen

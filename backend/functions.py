@@ -1,3 +1,8 @@
+# SUPER SNAKES AND LADDERS with UI v0.2
+# Software and Systems 25/26
+# Classes Module
+# Daniel Cowen
+
 from backend.classes import Teleporter
 from backend.classes import Player
 from typing import List

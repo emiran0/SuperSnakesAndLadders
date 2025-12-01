@@ -1,7 +1,13 @@
+# SUPER SNAKES AND LADDERS with UI v0.2
+# Small Embedded Systems 25/26
+# Menus Module
+# Yanzhi Bao
+
 # menus.py （yanzhi）
 import pygame
-import ui
-import classes
+import frontend.ui as ui
+import frontend.constants as constants
+import backend.classes as classes
 '''
 # menus py ! !
  I've created a new script containing the UI rendering logic for the start and restart buttons, 
@@ -92,7 +98,7 @@ def get_game_setup(display):
                 # --- PHASE 1: NAME INPUT ---
                 else:
                     if result.strip():                         # Name Input
-                        color = ui.PLAYER_COLORS[len(players)]
+                        color = constants.PLAYER_COLORS[len(players)]
                         players.append(classes.Player(result, color))
                         input_box.text = ""           
                         
@@ -109,9 +115,6 @@ def get_game_setup(display):
         
         pygame.display.flip()
         clock.tick(30)
-
-
-
 
 # ==========================================
 # Function: show_game_over (Game Over Screen)
