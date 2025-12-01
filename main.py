@@ -1,4 +1,4 @@
-# SUPER SNAKES AND LADDERS with UI v0.2
+# SUPER SNAKES AND LADDERS v1.0
 # Software and Systems 25/26
 # Main Module (Modified)
 # Daniel Cowen, Emirhan Kartal, Irfan Satria, Yanzhi Bao

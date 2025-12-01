@@ -1,5 +1,5 @@
-# SUPER SNAKES AND LADDERS with UI v0.2
-# Small Embedded Systems 25/26
+# SUPER SNAKES AND LADDERS v1.0
+# Software and Systems 25/26
 # Menus Module
 # Yanzhi Bao
 # Emirhan Kartal
