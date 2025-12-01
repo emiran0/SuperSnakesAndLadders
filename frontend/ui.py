@@ -38,7 +38,9 @@ class GameUI:
             self.board_img = None
             
         #------------------------------------------------------------------------------------
-      
+        # Create button for user to press 'roll' (Daniel Cowen)
+        self.roll_button = Button(x=480, y=620, width=100, height=60, font=self.font, color=WHITE, text_color=BLACK, text="ROLL")
+
     # Converting gameplay into pixel coordinates for drawing onto screen
 
     def get_pixel_coords(self, square_number):
@@ -103,9 +105,67 @@ class GameUI:
         msg_surf = self.font.render(message, True, WHITE)
         self.screen.blit(msg_surf, (20, 635))
 
+        # Draws the button to 'Roll Dice' onto screen (Daniel Cowen)
+        self.roll_button.draw(self.screen)
+
         if not game_over and current_player:
             turn_surf = self.font.render(f"Next: {current_player.name}", True, current_player.color)
             self.screen.blit(turn_surf, (20, 610))
 
         pygame.display.flip() # show image from buffer
         self.clock.tick(FPS)
+
+class Button:
+    '''
+    A class for creating a button on the screen - Created by Daniel Cowen
+
+    Attributes:
+        x - specifies the x coordinate of the button
+        y - specifies the y coordinate of the button
+        width - specifies the horizontal distance from the x coordinate
+        height - specifies the vertical distance from the y coordinate
+        font - specifies the typeface for the text in the button
+        color - specifies the colour of the button itself
+        text_color - specifies the colour of the text in the button
+        text - allows the user to specify a short amount of text for placement in the button
+        rect - a pygame object of type Rect, built with the attributes above
+
+    Methods:
+        .draw(self, screen) - renders the button on the screen
+            args:  
+            screen - the pygame display which the game is being run on. appears as a pop-up window
+
+        .button_clicked(self, mouse_position) - method to determine whether the mouse has entered the borders of the button
+            args:
+            mouse_position - the location of the mouse on the screen. 
+    '''
+    def __init__(self, x, y, width, height, font, color, text_color, text=''):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.font = font
+        self.color = color
+        self.text_color = text_color
+        self.text = text
+    
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height) # create button instance using Pygame's inbuilt Rect function
+
+    def draw(self, screen):
+        # Method to draw the button onto the screen
+        text_surface = self.font.render(self.text, True, self.text_color) #render the text for inside the button
+
+        # calculate center coordinates of the rect
+        rect_center_x = self.x + self.width/2
+        rect_center_y = self.y + self.height/2
+
+        text_rect = text_surface.get_rect(center=(rect_center_x, rect_center_y)) # plot text on center coords of rectangle
+        pygame.draw.rect(screen, self.color, self.rect) # draws the rectangle to screen
+        screen.blit(text_surface, text_rect) # plot the rendered text (text_surface) with the destination text_rect onto the screen
+
+    def button_clicked(self, mouse_position):
+        # Method to check whether a button has been clicked or not
+        if self.rect.collidepoint(mouse_position):
+            return True
+        else:
+            return False
