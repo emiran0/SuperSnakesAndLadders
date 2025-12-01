@@ -208,3 +208,10 @@ __marimo__/
 
 # Python
 venv/
+.DS_Store
+.env
+.env.*
+.venv/
+.pytest_cache/
+pycache/
+__pycache__/

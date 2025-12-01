@@ -1,7 +1,7 @@
 # SUPER SNAKES AND LADDERS with UI v0.2
 # Small Embedded Systems 25/26
 # UI Module
-# Daniel Cowen, Irfan Satria
+# Daniel Cowen, Irfan Satria, Emirhan
 
 
 # Irfan:
@@ -9,10 +9,11 @@
 # it contains a single Class called GameUI containing the UI Elements.
 
 import pygame
+import sys
 
 from frontend.constants import BLACK, FPS, GRAY, SCREEN_HEIGHT, SCREEN_WIDTH, WHITE
 
-# -------------------------GAME UI (by Irfan Satria, modified by Daniel)---------------------------------------------------
+# -------------------------GAME UI (by Irfan Satria, modified by Daniel, Emirhan)---------------------------------------------------
 
 class GameUI: 
     def __init__(self):
@@ -28,9 +29,15 @@ class GameUI:
             # More suitable "Game-y" font
             #https://nimblebeastscollective.itch.io/nb-pixel-font-bundle
             self.font = pygame.font.Font("LCDBlock.ttf", 26)
+            self.title_font = pygame.font.Font("LCDBlock.ttf", 64)
+            self.button_font = pygame.font.Font("LCDBlock.ttf", 32)
+            self.subtitle_font = pygame.font.Font("LCDBlock.ttf", 28)
         except:
             #Revert to Arial if Font not found
             self.font = pygame.font.SysFont("Arial", 24)
+            self.title_font = pygame.font.SysFont("Arial", 64)
+            self.button_font = pygame.font.SysFont("Arial", 32)
+            self.subtitle_font = pygame.font.SysFont("Arial", 28)
         
         # Load Board Image -------------------------------------------------------------------
         try:
@@ -116,6 +123,36 @@ class GameUI:
 
         pygame.display.flip() # show image from buffer
         self.clock.tick(FPS)
+    
+    # Emirhan
+    def animate_player_move(self, players, current_idx, start_pos, end_pos, message):
+        """
+        Simple linear animation of a single player's piece along board squares.
+        Runs for 0.7 seconds total, regardless of distance. Not include delays for collision resulted events.
+        """
+        if start_pos == end_pos:
+            return
+
+        step = 1 if end_pos > start_pos else -1
+        distance = abs(end_pos - start_pos)
+
+        total_ms = 700
+        delay_ms = total_ms // distance  # Dynamic delay to avoid too fast animation
+        # print("Animating from", start_pos, "to", end_pos, "with delay", delay_ms, "ms")
+
+        pos = start_pos
+        while pos != end_pos:
+            pos += step
+            players[current_idx].position = pos
+
+            # keep window responsive, allow quit while animating
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            self.draw(players, players[current_idx], message, False)
+            pygame.time.delay(delay_ms)
 
 # Button By Daniel Cowen
 class Button:

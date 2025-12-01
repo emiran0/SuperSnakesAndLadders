@@ -19,6 +19,11 @@ display = ui.GameUI()
             ！！！ we'd need to add a major loop to support replayability.(yanzhi)      '''
 while True:
 
+     # --- 0. START MENU ---(Emirhan)
+    start_game = menus.show_start_menu(display)
+    if not start_game:
+        break
+
     # --- 1. SETUP  ----(Yanzhi)
     # The original input() has been replaced with calling the UI interface.
     players = menus.get_game_setup(display)
@@ -54,9 +59,12 @@ while True:
                     
                     # Roll & Move
                     roll = dice.dice_roll()
+                    start_pos = current_player.position
                     current_player.move(roll)
-                    time.sleep(0.5) 
-                    game_message = f"{current_player.name} rolled {roll}!"
+                    end_pos = current_player.position
+                    game_message = f"{current_player.name} rolled {roll}!" # Changed for better readability at the bottom bar (Emirhan)
+
+                    display.animate_player_move(players, current_idx, start_pos, end_pos, game_message) # Animation Function Call (Emirhan)
 
                     # Check Snakes/Ladders (Irfan)
                     hit_object = False

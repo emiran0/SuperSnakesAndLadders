@@ -2,6 +2,7 @@
 # Small Embedded Systems 25/26
 # Menus Module
 # Yanzhi Bao
+# Emirhan Kartal
 
 # menus.py （yanzhi）
 import pygame
@@ -48,6 +49,64 @@ class InputBox:
       
         screen.blit(surf, (self.rect.x + 10, self.rect.y + 10))  # Slightly adjust the text position to center it.
 
+# (Emirhan)
+def show_start_menu(display):
+    """
+    Very simple start menu:
+    - Shows 'SUPER SNAKES AND LADDERS' title
+    - 'START' button -> return True
+    - 'QUIT' button -> return False
+    """
+    screen = display.screen
+    clock = display.clock
+    title_font = display.title_font  # use same LCD-style font for theme
+    button_font = display.button_font
+
+    # Button sizing
+    button_width = 250
+    button_height = 60
+    center_x = (screen.get_width() // 2) - (button_width // 2)
+
+    start_y = 350
+    quit_y = start_y + button_height + 20
+
+    start_btn = ui.Button(center_x, start_y, button_width, button_height, button_font, WHITE, BLACK, "START")
+    quit_btn = ui.Button(center_x, quit_y, button_width, button_height, button_font, WHITE, BLACK, "QUIT")
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_btn.button_clicked(event.pos):
+                    return True
+                if quit_btn.button_clicked(event.pos):
+                    return False
+
+        screen.fill(BLACK)
+
+        # Big title
+        title_text = "SUPER SNAKES AND LADDERS"
+        title_surf = title_font.render(title_text, True, WHITE)
+        title_rect = title_surf.get_rect(center=(screen.get_width() // 2, 250))
+        screen.blit(title_surf, title_rect)
+
+        # Draw buttons
+        start_btn.draw(screen)
+        quit_btn.draw(screen)
+
+        # Bottom small credit subtitle
+        credit_text = "Made by Emirhan & Daniel & Yanzhi & Irfan"
+        credit = display.subtitle_font.render(credit_text, True, GREEN)
+
+        # Centered at the bottom (30 px above bottom edge)
+        credit_rect = credit.get_rect(center=(screen.get_width() // 2, screen.get_height() - 30))
+        screen.blit(credit, credit_rect)
+
+        pygame.display.flip()
+        # clock.tick(30)
+
+
 def get_game_setup(display):
     """
     Replace the original `input()` code in the main function with the following, 
@@ -55,7 +114,8 @@ def get_game_setup(display):
 
     """
     font = display.font
-    input_font = pygame.font.Font(None, 40) # ！！ I should mention that I can't use the previous font（LCD）, so I'm stuck with the default one. 
+    title_font = display.title_font # I fixed the font to be the same as the main font for consistency. (Emirhan)
+    input_font = display.font # I fixed the font to be the same as the main font for consistency. (Emirhan)
     screen = display.screen
     clock = display.clock
 
@@ -107,9 +167,10 @@ def get_game_setup(display):
                         else:
                             prompt = f"Name for Player {len(players)+1}:"  # Not done yet. Prompted to enter the next person's name.
         # Render Title and Prompt
-        title = font.render("SETUP GAME", True, GREEN)
+        title = title_font.render("SETUP PLAYERS", True, GREEN)
+        title_rect = title.get_rect(center=(screen.get_width() // 2, 150)) # Centered title and moved up a bit for better aesthetics (Emirhan)
         prompt_surf = font.render(prompt, True, WHITE)
-        screen.blit(title, (220, 100))
+        screen.blit(title, title_rect) # Also here to center the title (Emirhan)
         screen.blit(prompt_surf, (150, 250))
         input_box.draw(screen)
         
@@ -125,11 +186,12 @@ def show_game_over(display, winner_name):
     Display the ending screen.
     Return: True (replay) or False (exit)
     """
-    font = display.font
+    title_font = display.title_font # Changed fonts for consistency (Emirhan)
+    button_font = display.button_font
     screen = display.screen
     
     # Reuse the Danny's Button class from ui.py
-    replay_btn = ui.Button(200, 450, 200, 60, font, WHITE, BLACK, "PLAY AGAIN")
+    replay_btn = ui.Button(200, 450, 200, 60, button_font, WHITE, BLACK, "PLAY AGAIN")
     
     while True:
         screen.fill(BLACK)
@@ -142,9 +204,9 @@ def show_game_over(display, winner_name):
                     return True # Clicked the button, returns True (replay)
                 
         # Render Winning Text
-        win_text = font.render(f"{winner_name} WINS!", True, GREEN)
-
+        win_text = title_font.render(f"{winner_name} WINS!", True, GREEN)
+        win_rect = win_text.get_rect(center=(screen.get_width() // 2, 150)) # Centered title and moved up a bit for better aesthetics (Emirhan)
         # Draw the text and buttons
-        screen.blit(win_text, (200, 200))
+        screen.blit(win_text, win_rect)
         replay_btn.draw(screen)
         pygame.display.flip()
