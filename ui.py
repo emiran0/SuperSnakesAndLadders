@@ -7,6 +7,7 @@
 # it contains a single Class called GameUI containing the UI Elements.
 
 import pygame
+import sys
 
 # --- PYGAME SETUP ---
 # Create a square window for our board plus extra vertical space for text.
@@ -127,6 +128,34 @@ class GameUI:
         pygame.display.flip() # show image from buffer
         self.clock.tick(FPS)
 
+    def animate_player_move(self, players, current_idx, start_pos, end_pos, message):
+        """
+        Simple linear animation of a single player's piece along board squares.
+        Runs for 0.5 seconds total, regardless of distance.
+        """
+        if start_pos == end_pos:
+            return
+
+        step = 1 if end_pos > start_pos else -1
+        distance = abs(end_pos - start_pos)
+
+        total_ms = 700
+        delay_ms = max(55, int(total_ms / distance))
+
+        pos = start_pos
+        while pos != end_pos:
+            pos += step
+            players[current_idx].position = pos
+
+            # keep window responsive, allow quit while animating
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            self.draw(players, players[current_idx], message, False)
+            pygame.time.delay(delay_ms)
+
 class Button:
     '''
     A class for creating a button on the screen - Created by Daniel Cowen
@@ -181,3 +210,31 @@ class Button:
             return True
         else:
             return False
+        
+def animate_player_move(display, players, current_idx, start_pos, end_pos, message):
+    """
+    Simple linear animation of a single player's piece along board squares.
+    Runs for ~0.5 seconds total, regardless of distance.
+    """
+    if start_pos == end_pos:
+        return
+
+    step = 1 if end_pos > start_pos else -1
+    distance = abs(end_pos - start_pos)
+
+    # Try to keep total animation around 0.5s
+    total_ms = 500
+    delay_ms = max(15, int(total_ms / distance))
+
+    while start_pos != end_pos:
+        start_pos += step
+        players[current_idx].position = start_pos
+
+        # Allow window to be closed during animation
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        display.draw(players, players[current_idx], message, False)
+        pygame.time.delay(delay_ms)

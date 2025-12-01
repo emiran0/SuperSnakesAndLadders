@@ -42,6 +42,58 @@ class InputBox:
       
         screen.blit(surf, (self.rect.x + 10, self.rect.y + 10))  # Slightly adjust the text position to center it.
 
+def show_start_menu(display):
+    """
+    Very simple start menu:
+    - Shows 'SUPER SNAKES AND LADDERS' title
+    - 'START' button -> return True
+    - 'QUIT' button -> return False
+    """
+    screen = display.screen
+    clock = display.clock
+    font = display.font  # use same LCD-style font for theme
+
+    # Button sizing
+    button_width = 250
+    button_height = 60
+    center_x = (screen.get_width() // 2) - (button_width // 2)
+
+    start_y = 350
+    quit_y = start_y + button_height + 20
+
+    start_btn = ui.Button(center_x, start_y, button_width, button_height,
+                          font, WHITE, BLACK, "START")
+    quit_btn = ui.Button(center_x, quit_y, button_width, button_height,
+                         font, WHITE, BLACK, "QUIT")
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_btn.button_clicked(event.pos):
+                    return True
+                if quit_btn.button_clicked(event.pos):
+                    return False
+
+        screen.fill(BLACK)
+
+        # Big title
+        title_text = "SUPER SNAKES AND LADDERS"
+        title_surf = font.render(title_text, True, WHITE)
+        title_rect = title_surf.get_rect(
+            center=(screen.get_width() // 2, 200)
+        )
+        screen.blit(title_surf, title_rect)
+
+        # Draw buttons
+        start_btn.draw(screen)
+        quit_btn.draw(screen)
+
+        pygame.display.flip()
+        clock.tick(30)
+
+
 def get_game_setup(display):
     """
     Replace the original `input()` code in the main function with the following, 
@@ -109,8 +161,6 @@ def get_game_setup(display):
         
         pygame.display.flip()
         clock.tick(30)
-
-
 
 
 # ==========================================
