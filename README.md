@@ -12,11 +12,12 @@ A multiplayer Snakes &amp; Ladders game made on python.
 ## How To Play
 
 - Enter the amount of players
-- Just press enter as it goes through each player's turns!!!
+- Just click Roll as it goes through each player's turns!!!
 
 ## Installation
 
-- Nothing used yet just run the .py file on your favorite CLI (CMD, Visual Studio Code, etc..)
+- Install pygame (pip3 install pygame)
+- Just run the main.py file on your favorite CLI (CMD, Visual Studio Code, etc..)
 
 ### License
 
