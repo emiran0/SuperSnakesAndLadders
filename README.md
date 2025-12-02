@@ -1,6 +1,8 @@
 # Super Snakes & Ladders
 
 A multiplayer Snakes &amp; Ladders game made on python.
+Submission for LM Software and Systems Module (04 30056) 2025/2026
+University of Birmingham
 
 ## Contributors
 
