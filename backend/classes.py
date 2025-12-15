@@ -8,6 +8,19 @@ import random
 #---------------------------------------initialise Classes-----------------------------------
 #Dice class!
 class Dice:
+    """
+    A class for instantiating our Dice object. (Irfan)
+    
+    Attributes:
+        amount = how many (physical) dice?
+        number = how many sides of the dice?
+        
+        example = 1d6 = ONE dice with SIX sides
+        
+    methods: 
+        dice_roll = randomize a number. range of the random number depends on the max dice number and sides
+
+    """
     def __init__(self, amount, number):
         self.amount = amount
         self.number = number
@@ -21,11 +34,26 @@ class Dice:
 
 #Player class will handle the position of each player and the move function
 class Player:
-    def __init__(self, name, color):
+    
+    """
+    A class for instantiating our Player object. (Irfan)
+    
+    Attributes:
+        name (str): name of the player
+        color (list): color of the player (RGB value)
+        type (str): type of the player (HUMAN OR CPU)
+        
+    methods: 
+        move: move linearly forward n number of squares
+        teleport: instantly move to a determined square
+
+    """
+    def __init__(self, name, color, type):
         self.name = name
         print(f"{self.name} (Player) was created.")
         self.position = 0 # Give it a starting value
-        self.color = color 
+        self.color = color
+        self.type = type
 
     def move(self, steps):
         

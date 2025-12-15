@@ -96,7 +96,7 @@ def show_start_menu(display):
         quit_btn.draw(screen)
 
         # Bottom small credit subtitle
-        credit_text = "Made by Emirhan & Daniel & Yanzhi & Irfan"
+        credit_text = "Made by Emirhan & Daniel & Yanzhi & Irfan (GROUP 4)"
         credit = display.subtitle_font.render(credit_text, True, GREEN)
 
         # Centered at the bottom (30 px above bottom edge)
@@ -122,6 +122,7 @@ def get_game_setup(display):
     input_box = InputBox(200, 300, 200, 50, input_font)
     players = []
     prompt = "How many players? (1-4)"
+    prompt2 = "1-Player Game will create a CPU Player to play with you."
 
     """
     step = 0 (Phase 0): The program is waiting for you to enter the number of players.
@@ -159,19 +160,22 @@ def get_game_setup(display):
                 else:
                     if result.strip():                         # Name Input
                         color = constants.PLAYER_COLORS[len(players)]
-                        players.append(classes.Player(result, color))
+                        players.append(classes.Player(result, color, "human")) #added type "human" to distinguish from CPU (Irfan)
                         input_box.text = ""           
                         
                         if len(players) == target_count:
                             return players                     # All done. Return the list to main.py.
                         else:
                             prompt = f"Name for Player {len(players)+1}:"  # Not done yet. Prompted to enter the next person's name.
+                            
         # Render Title and Prompt
         title = title_font.render("SETUP PLAYERS", True, GREEN)
         title_rect = title.get_rect(center=(screen.get_width() // 2, 150)) # Centered title and moved up a bit for better aesthetics (Emirhan)
         prompt_surf = font.render(prompt, True, WHITE)
+        prompt2_surf = font.render(prompt2, True, WHITE)
         screen.blit(title, title_rect) # Also here to center the title (Emirhan)
         screen.blit(prompt_surf, (150, 250))
+        screen.blit(prompt2_surf, (50, 400))
         input_box.draw(screen)
         
         pygame.display.flip()
