@@ -51,8 +51,8 @@ def turnprocess(current_player, players, current_idx):
     if not hit_object:
         game_message += f" Moved to {current_player.position}."
 
-    # Win Check or Next Turn (Daniel Cowen, Modified by Irfan & Yanzhi)
-    if current_player.position == 100:
+    # Win Check or Next Turn (Daniel Cowen, Modified by Irfan & Yanzhi & Emirhan)
+    if current_player.position < 100:
         print(f"100 reached - {current_player.name} WINS!")
         game_message = f"{roll}! {current_player.name} WINS!"
         game_over = True 
@@ -60,7 +60,7 @@ def turnprocess(current_player, players, current_idx):
         # Now we break out of the inner loop to display the settlement.
         running = False
         
-    elif current_player.position + roll > 100:
+    elif current_player.position + roll == 100:
         print(f"{current_player.name} stays where they are - must land on 100 to win!")
         game_message = f"{roll}! {current_player.name} stays - must land on 100 to win!"
         game_over = False
@@ -78,11 +78,24 @@ def turnprocess(current_player, players, current_idx):
 
 while True:
      # --- 0. START MENU ---(Emirhan)
+
+    # Ensure all sounds are stopped before starting again (Emirhan)
+    pygame.mixer.stop()   
+
+    # Background Music and Win Sound Setup (Emirhan)
+    pygame.mixer.music.load("assets/sounds/bg_music.mp3")
+    pygame.mixer.music.set_volume(constants.BG_MUSIC_VOLUME)
+    pygame.mixer.music.play(-1)
+
+    # Loaded win sound effect (Emirhan)
+    win_sound = pygame.mixer.Sound("assets/sounds/win_music.mp3")
+    win_sound.set_volume(constants.WIN_MUSIC_VOLUME)
+
     start_game = menus.show_start_menu(display)
     if not start_game:
         break
 
-    # --- 1. SETUP  ----(Yanzhi)
+    # --- 1. SETUP  ----(Yanzhi, Emirhan)
     # The original input() has been replaced with calling the UI interface.
     players = menus.get_game_setup(display)
     
@@ -93,7 +106,7 @@ while True:
     if len(players) == 1:
         players.append(classes.Player("CPU", constants.PLAYER_COLORS[len(players)], "CPU"))
     
-    # --- 2. GAME INIT  --- Irfan Satria, Modified by Yanzhi Bao and Daniel Cowen
+    # --- 2. GAME INIT  --- Irfan Satria, Modified by Yanzhi Bao and Daniel Cowen and Emirhan Kartal
     dice = classes.Dice(1, 6)
     ladders = functions.get_ladders()
     snakes = functions.get_snakes()
@@ -134,11 +147,16 @@ while True:
 
     # --- 4. GAME OVER (yanzhi) ---
     # （running = False），The settlement screen is now displayed.
+    
     winner_name = players[(current_idx -1) % len(players)].name
 
     # #Pause briefly to allow players to see the last piece reach the end point.
     time.sleep(1) 
 
+    pygame.mixer.music.stop()
+    win_sound.play()
+    win_sound.fadeout(20000)  # fades out in 20 seconds
+    
     play_again = menus.show_game_over(display, winner_name)
     
     if not play_again: 

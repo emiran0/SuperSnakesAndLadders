@@ -11,6 +11,10 @@ FPS = 60 # Capping the Frames per second.
 # Prevents performance issues, without it everything is executed as fast as the processor allows.
 # 60 is selected as most monitors have a 60Hz refresh rate.
 
+# Background Music Volume
+BG_MUSIC_VOLUME = 0.3  
+WIN_MUSIC_VOLUME = 0.6 
+
 # DEFINE Colors ----------------------------------------------------------------
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

@@ -18,6 +18,7 @@ from frontend.constants import BLACK, FPS, GRAY, SCREEN_HEIGHT, SCREEN_WIDTH, WH
 class GameUI: 
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         #Window Caption
         pygame.display.set_caption("Super Snakes & Ladders | Software & Systems 25/26")

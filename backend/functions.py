@@ -12,7 +12,7 @@ from frontend.constants import PLAYER_COLORS
 import frontend.ui as ui
 
 # --- Get Player Count (with validation) --- 
-# Written by Irfan, with editing from Daniel
+# Written by Irfan, with editing from Daniel, Emirhan
 
 def get_players(players_string: str) -> List[Player]:
 
