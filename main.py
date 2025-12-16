@@ -52,7 +52,7 @@ def turnprocess(current_player, players, current_idx):
         game_message += f" Moved to {current_player.position}."
 
     # Win Check or Next Turn (Daniel Cowen, Modified by Irfan & Yanzhi & Emirhan)
-    if current_player.position < 100:
+    if current_player.position == 100:
         print(f"100 reached - {current_player.name} WINS!")
         game_message = f"{roll}! {current_player.name} WINS!"
         game_over = True 
@@ -60,7 +60,7 @@ def turnprocess(current_player, players, current_idx):
         # Now we break out of the inner loop to display the settlement.
         running = False
         
-    elif current_player.position + roll == 100:
+    elif current_player.position + roll > 100:
         print(f"{current_player.name} stays where they are - must land on 100 to win!")
         game_message = f"{roll}! {current_player.name} stays - must land on 100 to win!"
         game_over = False
