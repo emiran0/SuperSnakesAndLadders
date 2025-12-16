@@ -15,12 +15,21 @@ University of Birmingham
 
 ## Installation
 
-- Install pygame (pip3 install pygame)
-- Just run the main.py file on your favorite CLI (CMD, Visual Studio Code, etc..)
+- Install **pygame**
+
+```cmd
+pip3 install pygame
+```
+
+- Just run the _main.py_ file on your favorite CLI (CMD, Visual Studio Code, etc..)
+
+```cmd
+python3 main.py
+```
 
 ## How To Play
 
-- Enter the amount of players
+- Enter the amount of players and names.
 - Just click Roll as it goes through each player's turns!!!
 
 ### License
